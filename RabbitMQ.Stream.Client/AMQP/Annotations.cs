@@ -9,7 +9,7 @@ namespace RabbitMQ.Stream.Client.AMQP
 {
     public class Annotations : Map<object>
     {
-        internal static Annotations Parse(ref SequenceReader<byte> reader, ref int byteRead)
+        internal static new Annotations Parse(ref SequenceReader<byte> reader, ref int byteRead)
         {
             return Parse<Annotations>(ref reader, ref byteRead);
         }

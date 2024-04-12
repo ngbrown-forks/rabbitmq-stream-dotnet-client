@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace RabbitMQ.Stream.Client.AMQP
 {
-    public abstract class Map<TKey> : Dictionary<TKey, object>, IWritable where TKey : class
+    public class Map<TKey> : Dictionary<TKey, object>, IWritable where TKey : class
     {
         internal static T Parse<T>(ref SequenceReader<byte> reader, ref int byteRead) where T : Map<TKey>, new()
         {
@@ -28,6 +28,11 @@ namespace RabbitMQ.Stream.Client.AMQP
 
             byteRead += offset;
             return amqpMap;
+        }
+
+        internal static Map<TKey> Parse(ref SequenceReader<byte> reader, ref int byteRead)
+        {
+            return Parse<Map<TKey>>(ref reader, ref byteRead);
         }
 
         private int MapSize()

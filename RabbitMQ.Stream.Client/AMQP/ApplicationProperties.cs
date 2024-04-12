@@ -9,7 +9,7 @@ namespace RabbitMQ.Stream.Client.AMQP
 {
     public class ApplicationProperties : Map<string>
     {
-        internal static ApplicationProperties Parse(ref SequenceReader<byte> reader, ref int byteRead)
+        internal static new ApplicationProperties Parse(ref SequenceReader<byte> reader, ref int byteRead)
         {
             return Parse<ApplicationProperties>(ref reader, ref byteRead);
         }
