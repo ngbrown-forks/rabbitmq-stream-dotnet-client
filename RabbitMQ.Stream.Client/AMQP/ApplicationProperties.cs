@@ -2,6 +2,7 @@
 // 2.0, and the Mozilla Public License, version 2.0.
 // Copyright (c) 2017-2023 Broadcom. All Rights Reserved. The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
 
+using System;
 using System.Buffers;
 
 namespace RabbitMQ.Stream.Client.AMQP
@@ -13,9 +14,16 @@ namespace RabbitMQ.Stream.Client.AMQP
             return Parse<ApplicationProperties>(ref reader, ref byteRead);
         }
 
-        public ApplicationProperties()
+        public override int Size
         {
-            MapDataCode = DescribedFormatCode.ApplicationProperties;
+            get => DescribedFormatCode.Size + base.Size;
+        }
+
+        public override int Write(Span<byte> span)
+        {
+            var offset = DescribedFormatCode.Write(span, DescribedFormatCode.ApplicationProperties);
+            offset += base.Write(span[offset..]);
+            return offset;
         }
     }
 }

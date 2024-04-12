@@ -10,8 +10,6 @@ namespace RabbitMQ.Stream.Client.AMQP
 {
     public abstract class Map<TKey> : Dictionary<TKey, object>, IWritable where TKey : class
     {
-        protected byte MapDataCode;
-
         internal static T Parse<T>(ref SequenceReader<byte> reader, ref int byteRead) where T : Map<TKey>, new()
         {
             var offset = AmqpWireFormatting.ReadMapHeader(ref reader, out var count);
@@ -56,12 +54,11 @@ namespace RabbitMQ.Stream.Client.AMQP
             };
         }
 
-        public int Size
+        public virtual int Size
         {
             get
             {
-                var size = DescribedFormatCode.Size;
-                size += sizeof(byte); //FormatCode.List32
+                var size = sizeof(byte); //FormatCode.List32
                 size += sizeof(uint); // field numbers
                 size += sizeof(uint); // PropertySize
                 size += MapSize();
@@ -69,10 +66,9 @@ namespace RabbitMQ.Stream.Client.AMQP
             }
         }
 
-        public int Write(Span<byte> span)
+        public virtual int Write(Span<byte> span)
         {
-            var offset = DescribedFormatCode.Write(span, MapDataCode);
-            offset += WireFormatting.WriteByte(span[offset..], FormatCode.Map32);
+            var offset = WireFormatting.WriteByte(span, FormatCode.Map32);
             offset += WireFormatting.WriteUInt32(span[offset..],
                 (uint)MapSize() + DescribedFormatCode.Size + sizeof(byte)); // MapSize  + DescribedFormatCode + FormatCode
             offset += WireFormatting.WriteUInt32(span[offset..], (uint)Count * 2); // pair values

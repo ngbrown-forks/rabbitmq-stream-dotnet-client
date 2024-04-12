@@ -112,9 +112,6 @@ RabbitMQ.Stream.Client.AMQP.IWritable.Size.get -> int
 RabbitMQ.Stream.Client.AMQP.IWritable.Write(System.Span<byte> span) -> int
 RabbitMQ.Stream.Client.AMQP.Map<TKey>
 RabbitMQ.Stream.Client.AMQP.Map<TKey>.Map() -> void
-RabbitMQ.Stream.Client.AMQP.Map<TKey>.MapDataCode -> byte
-RabbitMQ.Stream.Client.AMQP.Map<TKey>.Size.get -> int
-RabbitMQ.Stream.Client.AMQP.Map<TKey>.Write(System.Span<byte> span) -> int
 RabbitMQ.Stream.Client.AMQP.Properties
 RabbitMQ.Stream.Client.AMQP.Properties.AbsoluteExpiryTime.get -> System.DateTime
 RabbitMQ.Stream.Client.AMQP.Properties.AbsoluteExpiryTime.set -> void

@@ -7,6 +7,12 @@ const RabbitMQ.Stream.Client.CreateSuperStreamResponse.Key = 29 -> ushort
 const RabbitMQ.Stream.Client.DeleteSuperStreamResponse.Key = 30 -> ushort
 const RabbitMQ.Stream.Client.RouteQueryResponse.Key = 24 -> ushort
 const RabbitMQ.Stream.Client.StreamStatsResponse.Key = 28 -> ushort
+virtual RabbitMQ.Stream.Client.AMQP.Map<TKey>.Size.get -> int
+virtual RabbitMQ.Stream.Client.AMQP.Map<TKey>.Write(System.Span<byte> span) -> int
+override RabbitMQ.Stream.Client.AMQP.ApplicationProperties.Size.get -> int
+override RabbitMQ.Stream.Client.AMQP.ApplicationProperties.Write(System.Span<byte> span) -> int
+override RabbitMQ.Stream.Client.AMQP.Annotations.Size.get -> int
+override RabbitMQ.Stream.Client.AMQP.Annotations.Write(System.Span<byte> span) -> int
 override RabbitMQ.Stream.Client.Broker.ToString() -> string
 override RabbitMQ.Stream.Client.ConsumerInfo.ToString() -> string
 override RabbitMQ.Stream.Client.ProducerInfo.ToString() -> string
