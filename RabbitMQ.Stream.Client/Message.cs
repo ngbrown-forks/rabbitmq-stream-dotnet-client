@@ -123,7 +123,7 @@ namespace RabbitMQ.Stream.Client
                         break;
                     case DescribedFormatCode.MessageAnnotations:
                         offset += DescribedFormatCode.Size;
-                        annotations = Annotations.Parse<Annotations>(ref reader, ref offset);
+                        annotations = Annotations.Parse(ref reader, ref offset);
                         break;
                     case DescribedFormatCode.MessageProperties:
                         reader.Rewind(DescribedFormatCode.Size);
@@ -132,7 +132,7 @@ namespace RabbitMQ.Stream.Client
                     case DescribedFormatCode.ApplicationProperties:
                         offset += DescribedFormatCode.Size;
                         applicationProperties =
-                            ApplicationProperties.Parse<ApplicationProperties>(ref reader, ref offset);
+                            ApplicationProperties.Parse(ref reader, ref offset);
                         break;
                     case DescribedFormatCode.MessageHeader:
                         reader.Rewind(DescribedFormatCode.Size);
