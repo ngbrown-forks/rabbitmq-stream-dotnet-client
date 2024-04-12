@@ -158,18 +158,9 @@ namespace RabbitMQ.Stream.Client.AMQP
 
                 case FormatCode.Map8:
                 case FormatCode.Map32:
-                    {
-                        offset = ReadMapHeader(ref reader, out var count);
-                        var values = count / 2;
-                        for (uint i = 0; i < values; i++)
-                        {
-                            offset += ReadAny(ref reader, out _);
-                            offset += ReadAny(ref reader, out _);
-                        }
-
-                        value = null;
-                        return offset;
-                    }
+                    offset = 0;
+                    value = Map<object>.Parse(ref reader, ref offset);
+                    return offset;
             }
 
             throw new AmqpParseException($"Read Any: Invalid type: {type}");
