@@ -376,18 +376,18 @@ namespace RabbitMQ.Stream.Client.AMQP
             throw new AmqpParseException($"ReadMapHeader Invalid type {type}");
         }
 
-        internal static int ReadListHeader(ref SequenceReader<byte> reader, out long lenght)
+        internal static int ReadListHeader(ref SequenceReader<byte> reader, out long count)
         {
             var offset = ReadType(ref reader, out var type);
             switch (type)
             {
                 case FormatCode.List0:
-                    lenght = 0;
+                    count = 0;
                     return offset;
                 case FormatCode.List8:
                     offset += WireFormatting.ReadByte(ref reader, out _);
                     offset += WireFormatting.ReadByte(ref reader, out var lenB);
-                    lenght = lenB;
+                    count = lenB;
                     // size := int(buf[0])
                     // if size > listLength-1 {
                     //     return 0, errorNew("invalid length")
@@ -396,7 +396,7 @@ namespace RabbitMQ.Stream.Client.AMQP
                 case FormatCode.List32:
                     offset += WireFormatting.ReadInt32(ref reader, out _);
                     offset += WireFormatting.ReadInt32(ref reader, out var lenI);
-                    lenght = lenI;
+                    count = lenI;
                     // size := int(buf[0])
                     // if size > listLength-1 {
                     //     return 0, errorNew("invalid length")
