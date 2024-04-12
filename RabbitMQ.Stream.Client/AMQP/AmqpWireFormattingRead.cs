@@ -152,16 +152,9 @@ namespace RabbitMQ.Stream.Client.AMQP
                 case FormatCode.List0:
                 case FormatCode.List8:
                 case FormatCode.List32:
-                    {
-                        offset = ReadListHeader(ref reader, out var fields);
-                        for (long i = 0; i < fields; i++)
-                        {
-                            offset += ReadAny(ref reader, out _);
-                        }
-
-                        value = null;
-                        return offset;
-                    }
+                    offset = ReadList(ref reader, out var resultList);
+                    value = resultList;
+                    return offset;
 
                 case FormatCode.Map8:
                 case FormatCode.Map32:
@@ -405,6 +398,28 @@ namespace RabbitMQ.Stream.Client.AMQP
             }
 
             throw new AmqpParseException($"ReadCompositeHeader Invalid type {type}");
+        }
+        
+        private static int ReadList(ref SequenceReader<byte> reader, out object[] value)
+        {
+            var offset = ReadListHeader(ref reader, out var count);
+            if (count == 0)
+            {
+                value = Array.Empty<object>();
+            }
+            else
+            {
+                var array = new object[count];
+                for (long i = 0; i < count; i++)
+                {
+                    offset += ReadAny(ref reader, out var v);
+                    array[i] = v;
+                }
+
+                value = array;
+            }
+
+            return offset;
         }
 
         internal static int ReadCompositeHeader(ref SequenceReader<byte> reader, out long fields, out byte next)
