@@ -17,11 +17,12 @@ namespace RabbitMQ.Stream.Client.AMQP
             var values = (count / 2);
             for (var i = 0; i < values; i++)
             {
-                offset += AmqpWireFormatting.ReadAny(ref reader, out var key);
+                offset += AmqpWireFormatting.ReadAny(ref reader, out var anyTypeKey);
                 offset += AmqpWireFormatting.ReadAny(ref reader, out var value);
+                var key = anyTypeKey as TKey;
                 if (!IsNullOrEmptyString(key)) // this should never occur because we never write null keys
                 {
-                    amqpMap[(key as TKey)!] = value;
+                    amqpMap[key!] = value;
                 }
             }
 
@@ -44,7 +45,7 @@ namespace RabbitMQ.Stream.Client.AMQP
             return size;
         }
 
-        private static bool IsNullOrEmptyString(object value)
+        private static bool IsNullOrEmptyString([System.Diagnostics.CodeAnalysis.NotNullWhen(false)] object value)
         {
             return value switch
             {
